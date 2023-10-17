@@ -36,8 +36,8 @@ fetch(geoJsonUrl)
 
     // Add CSS styles for the legend
     const legendStyle = document.createElement('style');
-    legendStyle.innerHTML = `
-      .info.legend {
+    legendStyle.innerHTML = 
+    `.info.legend {
         background: white;
         padding: 5px;
         border: 1px solid #000;
@@ -50,8 +50,8 @@ fetch(geoJsonUrl)
         height: 18px;
         margin-right: 5px;
         display: inline-block;
-      }
-    `;
+      }`;
+
     document.getElementsByTagName('head')[0].appendChild(legendStyle);
 
     data.features.forEach(feature => {
