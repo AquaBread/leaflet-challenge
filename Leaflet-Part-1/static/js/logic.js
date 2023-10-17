@@ -1,17 +1,13 @@
-// Initialize the map
 const myMap = L.map('map').setView([0, 0], 2);
 
-// Adds a tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(myMap);
 
-// Loads earthquake data from the USGS GeoJSON URL
 const geoJsonUrl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson';
 fetch(geoJsonUrl)
   .then(response => response.json())
   .then(data => {
-    // Creates a function to determine marker color based on depth
     function getMarkerColor(depth) {
       if (depth < 10) return 'green';
       else if (depth < 30) return 'yellow';
@@ -19,27 +15,45 @@ fetch(geoJsonUrl)
       else return 'red';
     }
 
-    // Creates a function to determine marker size based on magnitude
     function getMarkerSize(magnitude) {
         return magnitude * 5;
     }
 
-    // Creates a legend
     const legend = L.control({ position: 'bottomright' });
     legend.onAdd = function (map) {
         const div = L.DomUtil.create('div', 'info legend');
         const depths = [0, 10, 30, 70];
+        const colors = ['green', 'yellow', 'orange', 'red'];
         div.innerHTML = '<strong>Depth (km)</strong><br>';
         for (let i = 0; i < depths.length; i++) {
             div.innerHTML +=
-                '<i style="background:' + getMarkerColor(depths[i] + 1) + '"></i> ' +
+                '<i style="background:' + colors[i] + '"></i> ' +
                 depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
         }
         return div;
     };
     legend.addTo(myMap);
 
-    // Loops through the earthquake data and create markers
+    // Add CSS styles for the legend
+    const legendStyle = document.createElement('style');
+    legendStyle.innerHTML = `
+      .info.legend {
+        background: white;
+        padding: 5px;
+        border: 1px solid #000;
+        border-radius: 5px;
+        text-align: center;
+        max-width: 120px;
+      }
+      .info.legend i {
+        width: 18px;
+        height: 18px;
+        margin-right: 5px;
+        display: inline-block;
+      }
+    `;
+    document.getElementsByTagName('head')[0].appendChild(legendStyle);
+
     data.features.forEach(feature => {
         const coordinates = feature.geometry.coordinates;
         const magnitude = feature.properties.mag;
@@ -52,9 +66,9 @@ fetch(geoJsonUrl)
             fillColor: getMarkerColor(depth)
         }).addTo(myMap);
 
-        // Creates popups for each marker
         marker.bindPopup(
             `Magnitude: ${magnitude}<br>Depth: ${depth} km<br>Location: ${feature.properties.place}`
         );
     });
   });
+
