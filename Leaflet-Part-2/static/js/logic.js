@@ -70,7 +70,7 @@ d3.json(url).then(function (data) { //pull the earthquake JSON data with d3
     //this function pulls the tectonic plate data and draws a purple line over the plates
     d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json").then(function (data) { //pulls tectonic data with d3.json
         L.geoJson(data, {
-            color: "yellow",  //sets the line color to purple
+            color: "orange",  //sets the line color to purple
             weight: 3
         }).addTo(tectonics); //add the tectonic data to the tectonic layergroup / overlay
         tectonics.addTo(myMap);
@@ -79,22 +79,34 @@ d3.json(url).then(function (data) { //pull the earthquake JSON data with d3
 
 });
 
-// Create legend
+// Define CSS styles for the background colors
+var colorStyles = {
+    red: 'background: red',
+    orange: 'background: orange',
+    yellow: 'background: yellow',
+    pink: 'background: pink',
+    blue: 'background: blue',
+    green: 'background: green'
+};
+
 var legend = L.control({ position: "bottomright" });
 legend.onAdd = function(myMap) {
     var div = L.DomUtil.create("div", "legend legend-box");
+    div.style.backgroundColor = 'white'; // Set a white background
+    div.style.border = '2px solid #ccc'; // Add a border
+    div.style.borderRadius = '5px'; // Add rounded corners
+    div.style.padding = '10px'; // Add padding
     div.innerHTML += "<h4>Depth Color Legend</h4>";
+
+    // Create legend entries with inline style for colors
     div.innerHTML += '<i style="background: red"></i><span>(Depth < 10)</span><br>';
     div.innerHTML += '<i style="background: orange"></i><span>(10 < Depth <= 25)</span><br>';
     div.innerHTML += '<i style="background: yellow"></i><span>(25 < Depth <= 40)</span><br>';
     div.innerHTML += '<i style="background: pink"></i><span>(40 < Depth <= 55)</span><br>';
     div.innerHTML += '<i style="background: blue"></i><span>(55 < Depth <= 70)</span><br>';
-    div.innerHTML += '<i style="background: green"></i><span>(Depth > 70)</span><br';
+    div.innerHTML += '<i style="background: green"></i><span>(Depth > 70)</span><br>';
 
     return div;
 };
 
 legend.addTo(myMap); // Add the legend to the map
-
-legend.addTo(myMap).getContainer().classList.add('legend-box');
-
