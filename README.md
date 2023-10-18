@@ -1,6 +1,6 @@
 # leaflet-challenge
 
-This project, called "leaflet-challenge," is focused on visualizing earthquake data from the United States Geological Survey (USGS) in order to provide a meaningful and educational way to present this data to the public and government organizations. The goal is to develop tools that can help in better understanding the impact of earthquakes and related geological data. The project is divided into two parts:
+This project is focused on visualizing earthquake data from the United States Geological Survey (USGS) in order to provide a meaningful and educational way to present this data to the public and government organizations. The goal is to develop tools that can help in better understanding the impact of earthquakes and related geological data. The project is divided into two parts:
 
 ## Part 1: Create the Earthquake Visualization
 In this part of the project, the following steps need to be completed:
